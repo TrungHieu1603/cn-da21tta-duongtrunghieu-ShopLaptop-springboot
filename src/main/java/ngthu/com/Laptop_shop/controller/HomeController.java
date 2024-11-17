@@ -49,6 +49,10 @@ public class HomeController {
             m.addAttribute("user",userDtls);
         }
 
+        List<Category> allActiveCategory = categoryService.getAllActiveCategory();
+        m.addAttribute("categorys",allActiveCategory);
+
+
     }
 
     @GetMapping("/")
