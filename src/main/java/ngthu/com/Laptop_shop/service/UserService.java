@@ -5,4 +5,5 @@ import ngthu.com.Laptop_shop.model.UserDtls;
 public interface UserService {
         public UserDtls saveUser(UserDtls user);
 
+        public  UserDtls getUserByEmail(String email);
 }

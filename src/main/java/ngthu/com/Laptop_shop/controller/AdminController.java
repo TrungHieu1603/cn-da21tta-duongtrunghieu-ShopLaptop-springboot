@@ -3,8 +3,10 @@ package ngthu.com.Laptop_shop.controller;
 import jakarta.servlet.http.HttpSession;
 import ngthu.com.Laptop_shop.model.Category;
 import ngthu.com.Laptop_shop.model.Product;
+import ngthu.com.Laptop_shop.model.UserDtls;
 import ngthu.com.Laptop_shop.service.CategoryService;
 import ngthu.com.Laptop_shop.service.ProductService;
+import ngthu.com.Laptop_shop.service.UserService;
 import org.aspectj.apache.bcel.util.ClassPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -20,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -30,7 +33,20 @@ public class AdminController {
     private CategoryService categoryService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private ProductService productService;
+
+    @ModelAttribute
+    public void getUserDetails(Principal p, Model m){
+        if(p != null){
+            String email = p.getName();
+            UserDtls userDtls = userService.getUserByEmail(email);
+            m.addAttribute("user",userDtls);
+        }
+
+    }
 
     @GetMapping("/")
     public String index() {
