@@ -10,9 +10,11 @@ import java.util.Collection;
 import java.util.List;
 
 public class CustomUser implements UserDetails {
+
     private UserDtls user;
 
     public CustomUser(UserDtls user) {
+        super();
         this.user = user;
     }
 
@@ -51,4 +53,5 @@ public class CustomUser implements UserDetails {
     public boolean isEnabled() {
         return user.getIsEnable();
     }
+
 }

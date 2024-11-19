@@ -24,17 +24,17 @@ public class SecurityConfig {
     private AuthFailureHandlerImpl authenticationFailureHandler;
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
@@ -42,20 +42,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        http.csrf(csrf-> csrf.disable()).cors(cors-> cors.disable())
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
+    {
+        http.csrf(csrf->csrf.disable()).cors(cors->cors.disable())
                 .authorizeHttpRequests(req->req.requestMatchers("/user/**").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/**").permitAll())
                 .formLogin(form->form.loginPage("/signin")
                         .loginProcessingUrl("/login")
-                      .defaultSuccessUrl("/")
+//						.defaultSuccessUrl("/")
                         .failureHandler(authenticationFailureHandler)
-
                         .successHandler(authenticationSuccessHandler))
-
                 .logout(logout->logout.permitAll());
+
         return http.build();
     }
+
 }

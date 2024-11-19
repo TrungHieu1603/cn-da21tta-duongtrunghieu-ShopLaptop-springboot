@@ -17,17 +17,21 @@ import java.util.Set;
 @Service
 public class AuthSucessHandlerImpl implements AuthenticationSuccessHandler {
 
-
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) throws IOException, ServletException {
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-       Set<String> roles = AuthorityUtils.authorityListToSet(authorities);
 
-       if(roles.contains("ROLE_ADMIN")){
-           response.sendRedirect("/admin/");
-       }else{
-           response.sendRedirect("/");
-       }
+        Set<String> roles = AuthorityUtils.authorityListToSet(authorities);
+
+        if(roles.contains("ROLE_ADMIN"))
+        {
+            response.sendRedirect("/admin/");
+        }else {
+            response.sendRedirect("/");
+        }
+
     }
+
 }

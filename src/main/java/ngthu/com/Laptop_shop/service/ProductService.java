@@ -11,11 +11,12 @@ public interface ProductService {
 
     public List<Product> getAllProducts();
 
-    public  Boolean deleteProduct(Integer id);
+    public Boolean deleteProduct(Integer id);
 
-    public  Product getProductById(Integer id);
+    public Product getProductById(Integer id);
 
     public Product updateProduct(Product product, MultipartFile file);
 
-    public List<Product> getAllActiveProducts();
+    public List<Product> getAllActiveProducts(String category);
+
 }

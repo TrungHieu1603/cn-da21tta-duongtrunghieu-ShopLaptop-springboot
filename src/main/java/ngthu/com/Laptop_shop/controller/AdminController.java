@@ -33,21 +33,21 @@ public class AdminController {
     private CategoryService categoryService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private ProductService productService;
 
+    @Autowired
+    private UserService userService;
+
     @ModelAttribute
-    public void getUserDetails(Principal p, Model m){
-        if(p != null){
+    public void getUserDetails(Principal p, Model m) {
+        if (p != null) {
             String email = p.getName();
             UserDtls userDtls = userService.getUserByEmail(email);
-            m.addAttribute("user",userDtls);
+            m.addAttribute("user", userDtls);
         }
-        List<Category> allActiveCategory = categoryService.getAllActiveCategory();
-        m.addAttribute("categorys",allActiveCategory);
 
+        List<Category> allActiveCategory = categoryService.getAllActiveCategory();
+        m.addAttribute("categorys", allActiveCategory);
     }
 
     @GetMapping("/")
@@ -175,7 +175,7 @@ public class AdminController {
             Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "product_img" + File.separator
                     + image.getOriginalFilename());
 
-            System.out.println(path);
+            // System.out.println(path);
             Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
             session.setAttribute("succMsg", "Product Saved Success");
@@ -214,10 +214,9 @@ public class AdminController {
     public String updateProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile image,
                                 HttpSession session, Model m) {
 
-        if(product.getDiscount() < 0 || product.getDiscount() > 100){
-            session.setAttribute("errorMsg", "Invalid Discount");
-        }else {
-
+        if (product.getDiscount() < 0 || product.getDiscount() > 100) {
+            session.setAttribute("errorMsg", "invalid Discount");
+        } else {
             Product updateProduct = productService.updateProduct(product, image);
             if (!ObjectUtils.isEmpty(updateProduct)) {
                 session.setAttribute("succMsg", "Product update success");
@@ -225,28 +224,25 @@ public class AdminController {
                 session.setAttribute("errorMsg", "Something wrong on server");
             }
         }
-
         return "redirect:/admin/editProduct/" + product.getId();
     }
 
     @GetMapping("/users")
-    public String getAllUsers(  Model m){
-
-       List<UserDtls> users = userService.getUsers("ROLE_USER");
-        m.addAttribute("users",users);
+    public String getAllUsers(Model m) {
+        List<UserDtls> users = userService.getUsers("ROLE_USER");
+        m.addAttribute("users", users);
         return "/admin/users";
     }
 
-
     @GetMapping("/updateSts")
-    public String updateUserAccountStatus(@RequestParam Boolean status,@RequestParam Integer id,HttpSession session){
-
-       Boolean f = userService.updateAccountStatus(id,status);
-            if(f){
-                session.setAttribute("succMsg","Account Status Updated");
-            }else{
-                session.setAttribute("errorMsg","Something wrong on server");
-            }
+    public String updateUserAccountStatus(@RequestParam Boolean status, @RequestParam Integer id, HttpSession session) {
+        Boolean f = userService.updateAccountStatus(id, status);
+        if (f) {
+            session.setAttribute("succMsg", "Account Status Updated");
+        } else {
+            session.setAttribute("errorMsg", "Something wrong on server");
+        }
         return "redirect:/admin/users";
     }
+
 }

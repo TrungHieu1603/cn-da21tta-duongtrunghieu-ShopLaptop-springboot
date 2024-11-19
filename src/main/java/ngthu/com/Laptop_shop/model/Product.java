@@ -16,7 +16,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(length = 500)
     private String title;
@@ -37,6 +37,5 @@ public class Product {
     private Double discountPrice;
 
     private Boolean isActive;
-
 
 }

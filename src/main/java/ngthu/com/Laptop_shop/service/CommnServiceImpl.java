@@ -7,7 +7,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
-public class CommonServiceImpl implements CommonService {
+public class CommnServiceImpl implements CommonService {
 
     @Override
     public void removeSessionMessage() {
