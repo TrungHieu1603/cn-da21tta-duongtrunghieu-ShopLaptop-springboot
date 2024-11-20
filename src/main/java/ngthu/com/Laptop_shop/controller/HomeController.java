@@ -8,6 +8,7 @@ import ngthu.com.Laptop_shop.model.Category;
 import ngthu.com.Laptop_shop.model.Product;
 import ngthu.com.Laptop_shop.model.UserDtls;
 import ngthu.com.Laptop_shop.repository.ProductRepository;
+import ngthu.com.Laptop_shop.service.CartService;
 import ngthu.com.Laptop_shop.service.CategoryService;
 import ngthu.com.Laptop_shop.service.ProductService;
 import ngthu.com.Laptop_shop.service.UserService;
@@ -50,12 +51,18 @@ public class HomeController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private CartService cartService;
+
     @ModelAttribute
     public void getUserDetails(Principal p, Model m) {
         if (p != null) {
             String email = p.getName();
             UserDtls userDtls = userService.getUserByEmail(email);
             m.addAttribute("user", userDtls);
+            Integer countCart = cartService.getCountCart(userDtls.getId());
+            m.addAttribute("countCart",countCart);
+
         }
 
         List<Category> allActiveCategory = categoryService.getAllActiveCategory();
