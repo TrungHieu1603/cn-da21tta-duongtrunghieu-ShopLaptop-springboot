@@ -10,21 +10,22 @@
 <section>
 
     <div class="container mt-5 p-5">
+        <form action="/user/save-order" method="post">
         <div class="row">
 
             <div class="col-md-6">
-                <form>
+
                     <div class="mb-3 row">
-                        <p class="text-center fs-4">Fill Address</p>
+                        <p class="text-center fs-4">Billing Address</p>
                         <hr>
                         <div class="col p-1">
                             <label>First Name</label>
-                        <input type="text" name="firstName" class="form-control mt-1">
+                        <input type="text" name="firstName" class="form-control mt-1" required>
                         </div>
 
                         <div class="col p-1">
                             <label>Last Name</label>
-                            <input type="text" name="lastName" class="form-control mt-1">
+                            <input type="text" name="lastName" class="form-control mt-1" required>
                         </div>
 
                     </div>
@@ -33,12 +34,12 @@
 
                         <div class="col p-1">
                             <label>Email</label>
-                            <input type="email" name="Email" class="form-control mt-1">
+                            <input type="email" name="email" class="form-control mt-1" required>
                         </div>
 
                         <div class="col p-1">
                             <label>Mobile Number</label>
-                            <input type="text" name="mobileNo" class="form-control mt-1">
+                            <input type="text" name="mobileNo" class="form-control mt-1" required>
                         </div>
                     </div>
 
@@ -46,12 +47,12 @@
 
                         <div class="col p-1">
                             <label>Address</label>
-                            <input type="text" name="address" class="form-control mt-1">
+                            <input type="text" name="address" class="form-control mt-1" required>
                         </div>
 
                         <div class="col p-1">
                             <label>City</label>
-                            <input type="text" name="city" class="form-control mt-1">
+                            <input type="text" name="city" class="form-control mt-1" required>
                         </div>
                     </div>
 
@@ -60,16 +61,16 @@
 
                         <div class="col p-1">
                             <label>State</label>
-                            <input type="text" name="state" class="form-control mt-1">
+                            <input type="text" name="state" class="form-control mt-1" required>
                         </div>
 
                         <div class="col p-1">
                             <label>Pincode</label>
-                            <input type="number" name="pincode" class="form-control mt-1">
+                            <input type="number" name="pincode" class="form-control mt-1" required>
                         </div>
                     </div>
 
-                </form>
+              <!--  </form> -->
             </div>
             <div class="col-md-6 ">
                 <p class="text-center fs-4">Payment Type</p>
@@ -105,28 +106,30 @@
                 <div class="card shadow p-3 mt-2 mb-5 bg-body-tertiary rounded">
 
                     <div class="card-body">
-                        <form action="/login" method="post">
+                      <!--  <form action="/login" method="post"> -->
                             <div class="mb-3">
                                 <label class="form-label">Select Payment Type</label>
                                     <hr>
-                            <select class="form-control">
+                            <select class="form-control" name="paymentType" required>
                                 <option>--Select--</option>
-                                <option>Cash On Delivery</option>
-                                <option>Online Payment</option>
+                                <option value="COD">Cash On Delivery</option>
+                                <option value="ONLINE">Online Payment</option>
 
                             </select>
                             </div>
 
 
-                            <button type="submit"
+                            <button
                                     class="btn bg-primary text-white col-md-12">Place Order</button>
-                        </form>
+
                     </div>
 
 
                 </div>
             </div>
+
         </div>
+        </form>
     </div>
 
 </section>

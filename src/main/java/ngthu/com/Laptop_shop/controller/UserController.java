@@ -3,18 +3,17 @@ package ngthu.com.Laptop_shop.controller;
 import jakarta.servlet.http.HttpSession;
 import ngthu.com.Laptop_shop.model.Cart;
 import ngthu.com.Laptop_shop.model.Category;
+import ngthu.com.Laptop_shop.model.OrderRequest;
 import ngthu.com.Laptop_shop.model.UserDtls;
 import ngthu.com.Laptop_shop.service.CartService;
 import ngthu.com.Laptop_shop.service.CategoryService;
+import ngthu.com.Laptop_shop.service.OrderService;
 import ngthu.com.Laptop_shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -29,6 +28,9 @@ public class UserController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/")
     public String home() {
@@ -90,6 +92,14 @@ public class UserController {
     public String orderPage(){
 
         return "/user/order";
+    }
+
+    @PostMapping("/save-order")
+    public String saveOrder(@ModelAttribute OrderRequest request,Principal p){
+        UserDtls user = getLoggedInUserDetails(p);
+        //System.out.println(request);
+        orderService.saveOrder(user.getId(),request);
+        return "/user/success";
     }
 
 }
