@@ -1,14 +1,12 @@
 package ngthu.com.Laptop_shop.controller;
 
 import jakarta.servlet.http.HttpSession;
-import ngthu.com.Laptop_shop.model.Cart;
-import ngthu.com.Laptop_shop.model.Category;
-import ngthu.com.Laptop_shop.model.OrderRequest;
-import ngthu.com.Laptop_shop.model.UserDtls;
+import ngthu.com.Laptop_shop.model.*;
 import ngthu.com.Laptop_shop.service.CartService;
 import ngthu.com.Laptop_shop.service.CategoryService;
 import ngthu.com.Laptop_shop.service.OrderService;
 import ngthu.com.Laptop_shop.service.UserService;
+import ngthu.com.Laptop_shop.util.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -115,6 +113,36 @@ public class UserController {
     @GetMapping("/success")
     public String loadSuccess(){
         return "/user/success";
+    }
+
+    @GetMapping("/user-orders")
+    public String myOrder(Model m,Principal p){
+       UserDtls loginUser = getLoggedInUserDetails(p);
+      List<ProductOrder> orders =  orderService.getOrdersByUser(loginUser.getId());
+      m.addAttribute("orders",orders);
+      return "/user/my_orders";
+    }
+
+    @GetMapping("/update-status")
+    public String updateOrderStatus(@RequestParam Integer id,@RequestParam Integer st,HttpSession session){
+
+        OrderStatus[] values = OrderStatus.values();
+
+        String status = null;
+        for(OrderStatus orderSt : values){
+            if(orderSt.getId().equals(st)){
+                status = orderSt.getName();
+            }
+
+        }
+        Boolean updateOrder = orderService.updateOrderStatus(id,status);
+        if(updateOrder){
+            session.setAttribute("succMsg", "Status updated");
+        } else {
+            session.setAttribute("errorMsg", "Status not updated!");
+        }
+
+        return "redirect:/user/user-orders";
     }
 
 }
