@@ -1,10 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::Layout(~{::section})}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-    <h1>Order success</h1>
+<section>
+
+    <div class="container mt-5 p-5">
+
+            <div class="row">
+
+                <div class="col-md-6 offset-md-3 text-center">
+                    <i class="fa-solid fa-circle-check fa-5x text-success"></i>
+                    <p class="fs-3">Product Ordered Successfully</p> <br>
+                    <p class="fs-4">Product will be delivered with in 7 days</p>
+                    <div class="text-center">
+                        <a href="/" class="btn btn-primary">Home</a>
+                        <a href="/user/user-orders" class="btn btn-primary">Your Order</a>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+
+</section>
 </body>
 </html>
