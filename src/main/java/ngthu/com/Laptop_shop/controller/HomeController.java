@@ -157,7 +157,7 @@ public class HomeController {
             if (sendMail) {
                 session.setAttribute("succMsg", "Please check your email..Password Reset link sent");
             } else {
-                session.setAttribute("errorMsg", "Somethong wrong on server ! Email not send");
+                session.setAttribute("errorMsg", "Something wrong on server ! Email not send");
             }
         }
 
