@@ -61,8 +61,7 @@ public class HomeController {
             UserDtls userDtls = userService.getUserByEmail(email);
             m.addAttribute("user", userDtls);
             Integer countCart = cartService.getCountCart(userDtls.getId());
-            m.addAttribute("countCart",countCart);
-
+            m.addAttribute("countCart", countCart);
         }
 
         List<Category> allActiveCategory = categoryService.getAllActiveCategory();
@@ -158,7 +157,7 @@ public class HomeController {
             if (sendMail) {
                 session.setAttribute("succMsg", "Please check your email..Password Reset link sent");
             } else {
-                session.setAttribute("errorMsg", "Something wrong on server ! Email not send");
+                session.setAttribute("errorMsg", "Somethong wrong on server ! Email not send");
             }
         }
 
@@ -190,8 +189,8 @@ public class HomeController {
             userByToken.setPassword(passwordEncoder.encode(password));
             userByToken.setResetToken(null);
             userService.updateUser(userByToken);
-            //session.setAttribute("succMsg", "Password change successfully");
-            m.addAttribute("msg","Password change successfully");
+            // session.setAttribute("succMsg", "Password change successfully");
+            m.addAttribute("msg", "Password change successfully");
 
             return "message";
         }
