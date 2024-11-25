@@ -1,6 +1,7 @@
 package ngthu.com.Laptop_shop.service;
 
 import ngthu.com.Laptop_shop.model.UserDtls;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,5 +28,8 @@ public interface UserService {
         public UserDtls getUserByToken(String token);
 
         public UserDtls updateUser(UserDtls user);
+
+        public UserDtls updateUserProfile(UserDtls user, MultipartFile img);
+
 
 }
