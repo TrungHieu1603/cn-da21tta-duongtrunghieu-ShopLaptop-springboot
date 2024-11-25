@@ -7,6 +7,7 @@ import ngthu.com.Laptop_shop.model.ProductOrder;
 import ngthu.com.Laptop_shop.repository.CartRepository;
 import ngthu.com.Laptop_shop.repository.ProductOrderRepository;
 import ngthu.com.Laptop_shop.service.OrderService;
+import ngthu.com.Laptop_shop.util.CommonUtil;
 import ngthu.com.Laptop_shop.util.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,18 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private CommonUtil commonUtil;
+
     @Override
-    public void saveOrder(Integer userid, OrderRequest orderRequest) {
-      List<Cart> carts = cartRepository.findByUserId(userid);
-        for(Cart cart:carts){
+    public void saveOrder(Integer userid, OrderRequest orderRequest) throws Exception {
+
+        List<Cart> carts = cartRepository.findByUserId(userid);
+
+        for (Cart cart : carts) {
+
             ProductOrder order = new ProductOrder();
+
             order.setOrderId(UUID.randomUUID().toString());
             order.setOrderDate(LocalDate.now());
 
@@ -49,34 +57,38 @@ public class OrderServiceImpl implements OrderService {
             address.setEmail(orderRequest.getEmail());
             address.setMobileNo(orderRequest.getMobileNo());
             address.setAddress(orderRequest.getAddress());
+            address.setCity(orderRequest.getCity());
             address.setState(orderRequest.getState());
             address.setPincode(orderRequest.getPincode());
 
             order.setOrderAddress(address);
 
-            orderRepository.save(order);
+            ProductOrder saveOrder = orderRepository.save(order);
+            commonUtil.sendMailForProductOrder(saveOrder, "success");
         }
-
     }
 
     @Override
     public List<ProductOrder> getOrdersByUser(Integer userId) {
-
-       List<ProductOrder> orders = orderRepository.findByUserId(userId);
-
+        List<ProductOrder> orders = orderRepository.findByUserId(userId);
         return orders;
     }
 
     @Override
-    public Boolean updateOrderStatus(Integer id, String status) {
-     Optional<ProductOrder> findById = orderRepository.findById(id);
-     if(findById.isPresent()){
-         ProductOrder productOrders = findById.get();
-         productOrders.setStatus(status);
-         orderRepository.save(productOrders);
-         return true;
-     }
-
-     return false;
+    public ProductOrder updateOrderStatus(Integer id, String status) {
+        Optional<ProductOrder> findById = orderRepository.findById(id);
+        if (findById.isPresent()) {
+            ProductOrder productOrder = findById.get();
+            productOrder.setStatus(status);
+            ProductOrder updateOrder = orderRepository.save(productOrder);
+            return updateOrder;
+        }
+        return null;
     }
+
+    @Override
+    public List<ProductOrder> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
 }
