@@ -10,6 +10,9 @@ import ngthu.com.Laptop_shop.service.OrderService;
 import ngthu.com.Laptop_shop.util.CommonUtil;
 import ngthu.com.Laptop_shop.util.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,7 +20,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -92,11 +94,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page<ProductOrder> getAllOrdersPagination(Integer pageNo, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return orderRepository.findAll(pageable);
+
+    }
+
+    @Override
     public ProductOrder getOrdersByOrderId(String orderId) {
-
-      return orderRepository.findByOrderId(orderId);
-
-
+        return orderRepository.findByOrderId(orderId);
     }
 
 }

@@ -1,6 +1,7 @@
 package ngthu.com.Laptop_shop.service;
 
 import ngthu.com.Laptop_shop.model.Category;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -17,5 +18,7 @@ public interface CategoryService {
     public Category getCategoryById(int id);
 
     public List<Category> getAllActiveCategory();
+
+    public Page<Category> getAllCategorPagination(Integer pageNo, Integer pageSize);
 
 }
