@@ -127,7 +127,7 @@ public class HomeController {
         return "redirect:/register";
     }
 
-//	Forgot Password Code
+
 
     @GetMapping("/forgot-password")
     public String showForgotPassword() {
@@ -147,7 +147,7 @@ public class HomeController {
             String resetToken = UUID.randomUUID().toString();
             userService.updateUserResetToken(email, resetToken);
 
-            // Generate URL :
+
             // http://localhost:8080/reset-password?token=sfgdbgfswegfbdgfewgvsrg
 
             String url = CommonUtil.generateUrl(request) + "/reset-password?token=" + resetToken;
@@ -194,6 +194,14 @@ public class HomeController {
 
             return "message";
         }
+
+    }
+    @GetMapping("/search")
+    public String searchProduct(@RequestParam String ch,Model m){
+
+       List<Product> searchProducts = productService.searchProduct(ch);
+        m.addAttribute("products",searchProducts);
+       return "product";
 
     }
 
