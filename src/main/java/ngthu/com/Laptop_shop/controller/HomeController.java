@@ -201,7 +201,11 @@ public class HomeController {
 
        List<Product> searchProducts = productService.searchProduct(ch);
         m.addAttribute("products",searchProducts);
-       return "product";
+
+        List<Category> categories = categoryService.getAllActiveCategory();
+        m.addAttribute("categories", categories);
+
+        return "product";
 
     }
 
