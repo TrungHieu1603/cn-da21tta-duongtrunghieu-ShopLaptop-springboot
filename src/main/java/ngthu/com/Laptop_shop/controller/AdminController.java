@@ -81,7 +81,7 @@ public class AdminController {
 
     @GetMapping("/category")
     public String category(Model m, @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
-                           @RequestParam(name = "pageSize", defaultValue = "2") Integer pageSize) {
+                           @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         // m.addAttribute("categorys", categoryService.getAllCategory());
         Page<Category> page = categoryService.getAllCategorPagination(pageNo, pageSize);
         List<Category> categorys = page.getContent();
@@ -218,7 +218,7 @@ public class AdminController {
     @GetMapping("/products")
     public String loadViewProduct(Model m, @RequestParam(defaultValue = "") String ch,
                                   @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
-                                  @RequestParam(name = "pageSize", defaultValue = "2") Integer pageSize) {
+                                  @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
 
 //		List<Product> products = null;
 //		if (ch != null && ch.length() > 0) {
@@ -282,14 +282,14 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public String getAllUsers(Model m,@RequestParam Integer type) {
-           List<UserDtls> users = null;
-            if(type==1){
-                users = userService.getUsers("ROLE_USER");
-            }else{
-                users = userService.getUsers("ROLE_ADMIN");
-            }
-            m.addAttribute("userType",type);
+    public String getAllUsers(Model m, @RequestParam Integer type) {
+        List<UserDtls> users = null;
+        if (type == 1) {
+            users = userService.getUsers("ROLE_USER");
+        } else {
+            users = userService.getUsers("ROLE_ADMIN");
+        }
+        m.addAttribute("userType",type);
         m.addAttribute("users", users);
         return "/admin/users";
     }
@@ -306,8 +306,8 @@ public class AdminController {
     }
 
     @GetMapping("/orders")
-    public String getAllOrders(Model m,@RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
-                               @RequestParam(name = "pageSize", defaultValue = "2") Integer pageSize) {
+    public String getAllOrders(Model m, @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+                               @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
 //		List<ProductOrder> allOrders = orderService.getAllOrders();
 //		m.addAttribute("orders", allOrders);
 //		m.addAttribute("srch", false);
@@ -355,8 +355,9 @@ public class AdminController {
     }
 
     @GetMapping("/search-order")
-    public String searchProduct(@RequestParam String orderId, Model m, HttpSession session,@RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
-                                @RequestParam(name = "pageSize", defaultValue = "2") Integer pageSize) {
+    public String searchProduct(@RequestParam String orderId, Model m, HttpSession session,
+                                @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+                                @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
 
         if (orderId != null && orderId.length() > 0) {
 
@@ -392,8 +393,7 @@ public class AdminController {
     }
 
     @GetMapping("/add-admin")
-    public String loadAdminAdd(){
-
+    public String loadAdminAdd() {
         return "/admin/add_admin";
     }
 
@@ -424,41 +424,42 @@ public class AdminController {
     }
 
     @GetMapping("/profile")
-    public String profile(){
+    public String profile() {
         return "/admin/profile";
     }
 
     @PostMapping("/update-profile")
-    public String updateProfile(@ModelAttribute UserDtls user, @RequestParam MultipartFile img,HttpSession session){
-        UserDtls updateUserProfile = userService.updateUserProfile(user,img);
-        if(ObjectUtils.isEmpty(updateUserProfile)){
+    public String updateProfile(@ModelAttribute UserDtls user, @RequestParam MultipartFile img, HttpSession session) {
+        UserDtls updateUserProfile = userService.updateUserProfile(user, img);
+        if (ObjectUtils.isEmpty(updateUserProfile)) {
             session.setAttribute("errorMsg", "Profile not updated");
-        }else {
+        } else {
             session.setAttribute("succMsg", "Profile Updated");
         }
         return "redirect:/admin/profile";
     }
 
-
     @PostMapping("/change-password")
-    public String changePassword(@RequestParam String newPassword, @RequestParam String currentPassword, Principal p, HttpSession session){
-
+    public String changePassword(@RequestParam String newPassword, @RequestParam String currentPassword, Principal p,
+                                 HttpSession session) {
         UserDtls loggedInUserDetails = commonUtil.getLoggedInUserDetails(p);
-        boolean matches =   passwordEncoder.matches(currentPassword,loggedInUserDetails.getPassword());
-        if(matches){
+
+        boolean matches = passwordEncoder.matches(currentPassword, loggedInUserDetails.getPassword());
+
+        if (matches) {
             String encodePassword = passwordEncoder.encode(newPassword);
             loggedInUserDetails.setPassword(encodePassword);
             UserDtls updateUser = userService.updateUser(loggedInUserDetails);
-            if(ObjectUtils.isEmpty(updateUser)){
-                session.setAttribute("errorMsg", "Password not updated!! Error in server");
-            }else{
-                session.setAttribute("succMsg", "Password Updated Successfully");
+            if (ObjectUtils.isEmpty(updateUser)) {
+                session.setAttribute("errorMsg", "Password not updated !! Error in server");
+            } else {
+                session.setAttribute("succMsg", "Password Updated sucessfully");
             }
-        }else {
+        } else {
             session.setAttribute("errorMsg", "Current Password incorrect");
         }
+
         return "redirect:/admin/profile";
     }
-
 
 }

@@ -23,9 +23,8 @@
 
                 </th:block>
                 <div class="col-md-6 text-end">
-                  <!--  <img alt="" src="/img/product_img/laptop.jpg" width="330px"
-                         height="400px">-->
-                    <img alt="" th:src="@{'/img/product_img/'+${product.image}}" width="330px" height="400px">
+                    <img alt="" src="/img/product_img/laptop.jpg" width="330px"
+                         height="400px">
                 </div>
 
                 <div class="col-md-6">
@@ -50,7 +49,7 @@
                         Days Replacement & Return
                     </p>
                     <p class="fs-5 fw-bold">
-                        Price :&nbsp; &nbsp; &nbsp; &nbsp;
+                        Price :&nbsp; &nbsp; &nbsp; &nbsp;<i class="fas fa-rupee-sign"></i>
                         [[${product.discountPrice}]] <span
                             class="fs-6 text-decoration-line-through text-secondary">[[${product.price}]]</span>
                         <span class="fs-6  text-success">[[${product.discount}]]%

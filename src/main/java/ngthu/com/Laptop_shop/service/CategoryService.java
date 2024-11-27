@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
+
 public interface CategoryService {
 
     public Category saveCategory(Category category);
@@ -19,8 +20,6 @@ public interface CategoryService {
 
     public List<Category> getAllActiveCategory();
 
-    public Page<Category> getAllCategorPagination(Integer pageNo, Integer pageSize);
-
-
+    public Page<Category> getAllCategorPagination(Integer pageNo,Integer pageSize);
 
 }

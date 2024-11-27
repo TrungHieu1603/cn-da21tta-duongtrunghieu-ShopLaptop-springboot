@@ -34,7 +34,6 @@ public class AuthFailureHandlerImpl extends SimpleUrlAuthenticationFailureHandle
 
         if (userDtls != null) {
 
-
             if (userDtls.getIsEnable()) {
 
                 if (userDtls.getAccountNonLocked()) {
@@ -54,13 +53,11 @@ public class AuthFailureHandlerImpl extends SimpleUrlAuthenticationFailureHandle
                     }
                 }
 
-
             } else {
                 exception = new LockedException("your account is inactive");
             }
-
-        }else {
-            exception = new LockedException("Email & password is invalid");
+        } else {
+            exception = new LockedException("Email & password invalid");
         }
 
         super.setDefaultFailureUrl("/signin?error");

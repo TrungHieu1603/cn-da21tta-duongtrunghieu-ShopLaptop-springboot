@@ -28,7 +28,7 @@ public class CommonUtil {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("ngthuthu01@gmail.com", "Shooping Cart");
+        helper.setFrom("daspabitra55@gmail.com", "Shooping Cart");
         helper.setTo(reciepentEmail);
 
         String content = "<p>Hello,</p>" + "<p>You have requested to reset your password.</p>"
@@ -46,11 +46,13 @@ public class CommonUtil {
         String siteUrl = request.getRequestURL().toString();
 
         return siteUrl.replace(request.getServletPath(), "");
-
     }
-    String msg=null;
 
-    public Boolean sendMailForProductOrder(ProductOrder order,String status) throws Exception{
+    String msg=null;;
+
+    public Boolean sendMailForProductOrder(ProductOrder order,String status) throws Exception
+    {
+
         msg="<p>Hello [[name]],</p>"
                 + "<p>Thank you order <b>[[orderStatus]]</b>.</p>"
                 + "<p><b>Product Details:</b></p>"
@@ -60,13 +62,11 @@ public class CommonUtil {
                 + "<p>Price : [[price]]</p>"
                 + "<p>Payment Type : [[paymentType]]</p>";
 
-
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("ngthuthu01@gmail.com", "Shooping Cart");
+        helper.setFrom("daspabitra55@gmail.com", "Shooping Cart");
         helper.setTo(order.getOrderAddress().getEmail());
-
 
         msg=msg.replace("[[name]]",order.getOrderAddress().getFirstName());
         msg=msg.replace("[[orderStatus]]",status);
@@ -87,5 +87,6 @@ public class CommonUtil {
         UserDtls userDtls = userService.getUserByEmail(email);
         return userDtls;
     }
+
 
 }

@@ -127,51 +127,56 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDtls updateUserProfile(UserDtls user, MultipartFile img) {
 
-     UserDtls dbUser = userRepository.findById(user.getId()).get();
+        UserDtls dbUser = userRepository.findById(user.getId()).get();
 
-     if(!img.isEmpty()){
-         dbUser.setProfileImage(img.getOriginalFilename());
-     }
+        if (!img.isEmpty()) {
+            dbUser.setProfileImage(img.getOriginalFilename());
+        }
 
-     if(!ObjectUtils.isEmpty(dbUser)){
+        if (!ObjectUtils.isEmpty(dbUser)) {
+
             dbUser.setName(user.getName());
             dbUser.setMobileNumber(user.getMobileNumber());
             dbUser.setAddress(user.getAddress());
             dbUser.setCity(user.getCity());
             dbUser.setState(user.getState());
             dbUser.setPincode(user.getPincode());
-        dbUser = userRepository.save(dbUser);
+            dbUser = userRepository.save(dbUser);
         }
-     try {
-         if (!img.isEmpty()) {
-             File saveFile = new ClassPathResource("static/img").getFile();
 
-             Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "profile_img" + File.separator
-                     + img.getOriginalFilename());
+        try {
+            if (!img.isEmpty()) {
+                File saveFile = new ClassPathResource("static/img").getFile();
 
-//				System.out.println(path);
-             Files.copy(img.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-         }
-     }catch (Exception e){
-         e.printStackTrace();
-     }
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "profile_img" + File.separator
+                        + img.getOriginalFilename());
+
+//			System.out.println(path);
+                Files.copy(img.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return dbUser;
     }
 
     @Override
     public UserDtls saveAdmin(UserDtls user) {
+        user.setRole("ROLE_ADMIN");
+        user.setIsEnable(true);
+        user.setAccountNonLocked(true);
+        user.setFailedAttempt(0);
 
-            user.setRole("ROLE_ADMIN");
-            user.setIsEnable(true);
-            user.setAccountNonLocked(true);
-            user.setFailedAttempt(0);
+        String encodePassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodePassword);
+        UserDtls saveUser = userRepository.save(user);
+        return saveUser;
+    }
 
-            String encodePassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(encodePassword);
-            UserDtls saveUser = userRepository.save(user);
-            return saveUser;
-
-
+    @Override
+    public Boolean existsEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
 }
