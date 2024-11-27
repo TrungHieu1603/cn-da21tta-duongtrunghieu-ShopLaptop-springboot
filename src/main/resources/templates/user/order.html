@@ -10,7 +10,7 @@
 <section>
 
     <div class="container mt-5 p-5">
-        <form action="/user/save-order" method="post">
+        <form action="/user/save-order" method="post" id="orders" novalidate>
         <div class="row">
 
             <div class="col-md-6">
@@ -57,7 +57,7 @@
                     </div>
 
 
-               <!--     <div class="mb-3 row">
+                 <div class="mb-3 row">
 
                         <div class="col p-1">
                             <label>State</label>
@@ -68,7 +68,7 @@
                             <label>Pincode</label>
                             <input type="number" name="pincode" class="form-control mt-1" required>
                         </div>
-                    </div> -->
+                    </div>
 
               <!--  </form> -->
             </div>
@@ -111,7 +111,7 @@
                                 <label class="form-label">Select Payment Type</label>
                                     <hr>
                             <select class="form-control" name="paymentType" required>
-                                <option>--Select--</option>
+                                <option value="">--Select--</option>
                                 <option value="COD">Cash On Delivery</option>
                                 <option value="ONLINE">Online Payment</option>
 
