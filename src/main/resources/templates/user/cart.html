@@ -2,69 +2,125 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{base::Layout(~{::section})}">
 <meta charset="UTF-8">
-<title>Title</title>
+<title>Cart</title>
+<head>
+    <style>
+        /* Sử dụng Flexbox để căn giữa cả 2 nút */
+        .button-container {
+            display: flex;
+            justify-content: center; /* Căn giữa các nút */
+            gap: 20px; /* Khoảng cách giữa các nút */
+            margin-top: 20px; /* Khoảng cách phía trên giữa các nút */
+        }
+
+        .button-container a {
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            text-align: center;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+    </style>
 </head>
 <body>
 <section>
     <div class="container-fluid mt-5 p-5">
 
         <div class="card card-sh">
-            <div class="card-header text-center">
-                <p class="fs-4">Cart Page</p>
+            <div class="card-header">
+                <p class="fs-4 text-center" style="margin: 0;">Cart Page</p>
+                <!-- Hiển thị thông báo nếu có thông điệp thành công -->
                 <th:block th:if="${session.succMsg}">
                     <p class="text-success fw-bold">[[${session.succMsg}]]</p>
                     <th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
                 </th:block>
 
+                <!-- Hiển thị thông báo nếu có thông điệp lỗi -->
                 <th:block th:if="${session.errorMsg}">
                     <p class="text-danger fw-bold">[[${session.errorMsg}]]</p>
                     <th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
                 </th:block>
             </div>
             <div class="card-body">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Sl No</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col" class="text-center">Quantity</th>
-                        <th scope="col">Total Price</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="cart,c:${carts}">
-                        <th scope="row">[[${c.count}]]</th>
-                        <td><img
-                                th:src="@{'/img/product_img/'+${cart.product.image}}"
-                                width="70px" height="70px"></td>
-                        <td>[[${cart.product.title}]]</td>
-                        <td>[[${cart.product.discountPrice}]]</td>
-                        <td class="text-center"><a style="text-decoration: none; line-height: 1; display: inline-flex; align-items: center;"
-                                                   th:href="@{'/user/cartQuantityUpdate?sy=de&cid='+${cart.id}}">
-                            <i class="fa-solid fa-minus"></i>
-                        </a> [ [[${cart.quantity}]] ] <a
-                                th:href="@{'/user/cartQuantityUpdate?sy=in&cid='+${cart.id}}">
-                            <i class="fa-solid fa-plus"></i>
-                        </a></td>
-                        <td>[[${cart.totalPrice}]]</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"></td>
-                        <td class="fw-bold">Total Price</td>
-                        <td class="fw-bold"> [[${totalOrderPrice}]]</td>
-                    </tr>
+                <!-- Kiểm tra giỏ hàng có sản phẩm hay không -->
+                <th:block th:if="${not #lists.isEmpty(carts)}">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Sl No</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col" class="text-center">Quantity</th>
+                            <th scope="col">Total Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Lặp qua từng sản phẩm trong giỏ hàng -->
+                        <tr th:each="cart, c:${carts}">
+                            <th scope="row">[[${c.count}]]</th>
+                            <td><img th:src="@{'/img/product_img/'+${cart.product.image}}" width="70px" height="70px"></td>
+                            <td>[[${cart.product.title}]]</td>
+                            <td>[[${cart.product.discountPrice}]]</td>
+                            <td class="text-center">
+                                <a style="text-decoration: none; line-height: 1; display: inline-flex; align-items: center;"
+                                   th:href="@{'/user/cartQuantityUpdate?sy=de&cid='+${cart.id}}">
+                                    <i class="fa-solid fa-minus"></i>
+                                </a>
+                                [ [[${cart.quantity}]] ]
+                                <a th:href="@{'/user/cartQuantityUpdate?sy=in&cid='+${cart.id}}">
+                                    <i class="fa-solid fa-plus"></i>
+                                </a>
+                            </td>
+                            <td>[[${cart.totalPrice}]]</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"></td>
+                            <td class="fw-bold">Total Price</td>
+                            <td class="fw-bold">[[${totalOrderPrice}]]</td>
+                        </tr>
+                        </tbody>
+                    </table>
 
-                    </tbody>
-                </table>
-                <div class="text-center">
-                    <a href="/user/orders" class="btn btn-warning"> Proceed Payment</a>
-                </div>
+                    <!-- Chứa các nút ở giữa -->
+                    <div class="button-container">
+                        <!-- Nút Mua thêm sản phẩm khác -->
+                        <a href="/products" class="btn btn-info">Mua thêm sản phẩm khác</a>
+                        <!-- Nút Proceed Payment -->
+                        <a href="/user/orders" class="btn btn-warning">Proceed Payment</a>
+
+
+                    </div>
+                </th:block>
+
+                <!-- Hiển thị thông báo nếu giỏ hàng trống -->
+                <th:block th:if="${#lists.isEmpty(carts)}">
+                    <div class="alert alert-warning text-center">
+                        Giỏ hàng của bạn hiện đang trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi đặt hàng.
+                    </div>
+                    <div class="text-center">
+                        <a href="/products" class="btn btn-primary">Quay về trang sản phẩm</a>
+                    </div>
+                </th:block>
             </div>
         </div>
     </div>
-
 </section>
 </body>
 </html>

@@ -14,8 +14,14 @@
             <div class="row">
 
                 <!-- Thêm thông báo lỗi nếu có -->
-                <th:block th:if="${errorMsg}">
-                    <p class="text-danger text-center alert alert-danger">[[${errorMsg}]]</p>
+                <th:block th:if="${errorMsg == 'Giỏ hàng của bạn hiện đang trống.'}">
+                    <div class="alert alert-warning text-center">
+                        Giỏ hàng của bạn hiện đang trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi đặt hàng.
+                    </div>
+                    <!-- Nút Quay về trang sản phẩm -->
+                    <div class="text-center">
+                        <a href="/products" class="btn btn-primary">Quay về trang sản phẩm</a>
+                    </div>
                 </th:block>
 
                 <div class="col-md-6">
