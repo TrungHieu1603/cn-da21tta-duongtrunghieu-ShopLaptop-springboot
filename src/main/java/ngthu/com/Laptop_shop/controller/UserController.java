@@ -26,19 +26,14 @@ public class UserController {
     private UserService userService;
     @Autowired
     private CategoryService categoryService;
-
     @Autowired
     private CartService cartService;
-
     @Autowired
     private OrderService orderService;
-
     @Autowired
     private CommonUtil commonUtil;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
 
     @GetMapping("/")
     public String home() {
@@ -73,14 +68,20 @@ public class UserController {
 
     @GetMapping("/cart")
     public String loadCartPage(Principal p, Model m) {
-
         UserDtls user = getLoggedInUserDetails(p);
         List<Cart> carts = cartService.getCartsByUser(user.getId());
         m.addAttribute("carts", carts);
-        if (carts.size() > 0) {
-            Double totalOrderPrice = carts.get(carts.size() - 1).getTotalOrderPrice();
-            m.addAttribute("totalOrderPrice", totalOrderPrice);
+
+        // Kiểm tra giỏ hàng trống và hiển thị thông báo
+        if (carts.isEmpty()) {
+            m.addAttribute("errorMsg", "Giỏ hàng của bạn hiện đang trống.");
+        } else {
+            if (carts.size() > 0) {
+                Double totalOrderPrice = carts.get(carts.size() - 1).getTotalOrderPrice();
+                m.addAttribute("totalOrderPrice", totalOrderPrice);
+            }
         }
+
         return "/user/cart";
     }
 
@@ -92,15 +93,21 @@ public class UserController {
 
     private UserDtls getLoggedInUserDetails(Principal p) {
         String email = p.getName();
-        UserDtls userDtls = userService.getUserByEmail(email);
-        return userDtls;
+        return userService.getUserByEmail(email);
     }
 
     @GetMapping("/orders")
-    public String orderPage(Principal p, Model m) {
+    public String orderPage(Principal p, Model m, HttpSession session) {
         UserDtls user = getLoggedInUserDetails(p);
         List<Cart> carts = cartService.getCartsByUser(user.getId());
         m.addAttribute("carts", carts);
+
+        // Kiểm tra giỏ hàng trống và hiển thị thông báo
+        if (carts.isEmpty()) {
+            session.setAttribute("errorMsg", "Bạn vẫn chưa chọn sản phẩm nào để mua.");
+            return "redirect:/user/cart";  // Quay lại trang giỏ hàng nếu không có sản phẩm
+        }
+
         if (carts.size() > 0) {
             Double orderPrice = carts.get(carts.size() - 1).getTotalOrderPrice();
             Double totalOrderPrice = carts.get(carts.size() - 1).getTotalOrderPrice() + 250 + 100;
@@ -111,9 +118,16 @@ public class UserController {
     }
 
     @PostMapping("/save-order")
-    public String saveOrder(@ModelAttribute OrderRequest request, Principal p) throws Exception {
-        // System.out.println(request);
+    public String saveOrder(@ModelAttribute OrderRequest request, Principal p, HttpSession session) throws Exception {
         UserDtls user = getLoggedInUserDetails(p);
+
+        // Kiểm tra giỏ hàng trống trước khi lưu đơn hàng
+        List<Cart> carts = cartService.getCartsByUser(user.getId());
+        if (carts.isEmpty()) {
+            session.setAttribute("errorMsg", "Bạn vẫn chưa chọn sản phẩm nào để mua.");
+            return "redirect:/user/cart"; // Quay lại trang giỏ hàng nếu không có sản phẩm
+        }
+
         orderService.saveOrder(user.getId(), request);
 
         return "redirect:/user/success";
@@ -134,7 +148,6 @@ public class UserController {
 
     @GetMapping("/update-status")
     public String updateOrderStatus(@RequestParam Integer id, @RequestParam Integer st, HttpSession session) {
-
         OrderStatus[] values = OrderStatus.values();
         String status = null;
 
@@ -155,7 +168,7 @@ public class UserController {
         if (!ObjectUtils.isEmpty(updateOrder)) {
             session.setAttribute("succMsg", "Status Updated");
         } else {
-            session.setAttribute("errorMsg", "status not updated");
+            session.setAttribute("errorMsg", "Status not updated");
         }
         return "redirect:/user/user-orders";
     }
@@ -190,7 +203,7 @@ public class UserController {
             if (ObjectUtils.isEmpty(updateUser)) {
                 session.setAttribute("errorMsg", "Password not updated !! Error in server");
             } else {
-                session.setAttribute("succMsg", "Password Updated sucessfully");
+                session.setAttribute("succMsg", "Password Updated successfully");
             }
         } else {
             session.setAttribute("errorMsg", "Current Password incorrect");
@@ -198,5 +211,4 @@ public class UserController {
 
         return "redirect:/user/profile";
     }
-
 }

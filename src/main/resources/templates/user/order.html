@@ -11,16 +11,20 @@
 
     <div class="container mt-5 p-5">
         <form action="/user/save-order" method="post" id="orders" novalidate>
-        <div class="row">
+            <div class="row">
 
-            <div class="col-md-6">
+                <!-- Thêm thông báo lỗi nếu có -->
+                <th:block th:if="${errorMsg}">
+                    <p class="text-danger text-center alert alert-danger">[[${errorMsg}]]</p>
+                </th:block>
 
+                <div class="col-md-6">
                     <div class="mb-3 row">
                         <p class="text-center fs-4">Billing Address</p>
                         <hr>
                         <div class="col p-1">
                             <label>First Name</label>
-                        <input type="text" name="firstName" class="form-control mt-1" required>
+                            <input type="text" name="firstName" class="form-control mt-1" required>
                         </div>
 
                         <div class="col p-1">
@@ -56,8 +60,7 @@
                         </div>
                     </div>
 
-
-                 <div class="mb-3 row">
+                    <div class="mb-3 row">
 
                         <div class="col p-1">
                             <label>State</label>
@@ -70,65 +73,65 @@
                         </div>
                     </div>
 
-              <!--  </form> -->
-            </div>
-            <div class="col-md-6 ">
-                <p class="text-center fs-4">Payment Type</p>
-                <hr>
-                <div class="card">
-                    <div class="card-body">
-                        <table class="table table-borderless">
-                            <tbody>
-                            <tr>
-                                <td>Total Price</td>
-                                <td>:</td>
-                                <td> [[${orderPrice}]]</td>
-                            </tr>
-                            <tr>
-                                <td>Delivery Fee</td>
-                                <td>:</td>
-                                <td> 100</td>
-                            </tr>
-                            <tr>
-                                <td>Tax</td>
-                                <td>:</td>
-                                <td> 150</td>
-                            </tr>
-                            <tr class="border-top">
-                                <td>Total Price</td>
-                                <td>:</td>
-                                <td> [[${totalOrderPrice}]]</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
-                <div class="card shadow p-3 mt-2 mb-5 bg-body-tertiary rounded">
 
-                    <div class="card-body">
-                      <!--  <form action="/login" method="post"> -->
+                <div class="col-md-6 ">
+                    <p class="text-center fs-4">Payment Type</p>
+                    <hr>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr>
+                                    <td>Total Price</td>
+                                    <td>:</td>
+                                    <td> [[${orderPrice}]]</td>
+                                </tr>
+                                <tr>
+                                    <td>Delivery Fee</td>
+                                    <td>:</td>
+                                    <td> 100</td>
+                                </tr>
+                                <tr>
+                                    <td>Tax</td>
+                                    <td>:</td>
+                                    <td> 150</td>
+                                </tr>
+                                <tr class="border-top">
+                                    <td>Total Price</td>
+                                    <td>:</td>
+                                    <td> [[${totalOrderPrice}]]</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Hiển thị thông báo giỏ hàng trống nếu có -->
+                    <th:block th:if="${errorMsg == 'Giỏ hàng của bạn hiện đang trống.'}">
+                        <div class="alert alert-warning text-center">
+                            Giỏ hàng của bạn hiện đang trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi đặt hàng.
+                        </div>
+                    </th:block>
+
+                    <div class="card shadow p-3 mt-2 mb-5 bg-body-tertiary rounded">
+                        <div class="card-body">
                             <div class="mb-3">
                                 <label class="form-label">Select Payment Type</label>
-                                    <hr>
-                            <select class="form-control" name="paymentType" required>
-                                <option value="">--Select--</option>
-                                <option value="COD">Cash On Delivery</option>
-                                <option value="ONLINE">Online Payment</option>
-
-                            </select>
+                                <hr>
+                                <select class="form-control" name="paymentType" required>
+                                    <option value="">--Select--</option>
+                                    <option value="COD">Cash On Delivery</option>
+                                    <option value="ONLINE">Online Payment</option>
+                                </select>
                             </div>
 
-
-                            <button
-                                    class="btn bg-primary text-white col-md-12">Place Order</button>
-
+                            <button class="btn bg-primary text-white col-md-12">Place Order</button>
+                        </div>
                     </div>
-
-
                 </div>
-            </div>
 
-        </div>
+            </div>
         </form>
     </div>
 
