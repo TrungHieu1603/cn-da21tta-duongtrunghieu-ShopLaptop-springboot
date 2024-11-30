@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Cart</title>
 <head>
-    <style>
+   <!-- <style>
         /* Sử dụng Flexbox để căn giữa cả 2 nút */
         .button-container {
             display: flex;
@@ -36,7 +36,7 @@
         .btn-info:hover {
             background-color: #138496;
         }
-    </style>
+    </style> -->
 </head>
 <body>
 <section>
@@ -58,7 +58,7 @@
                 </th:block>
             </div>
             <div class="card-body">
-                <!-- Kiểm tra giỏ hàng có sản phẩm hay không -->
+
                 <th:block th:if="${not #lists.isEmpty(carts)}">
                     <table class="table">
                         <thead>
@@ -72,7 +72,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!-- Lặp qua từng sản phẩm trong giỏ hàng -->
+
                         <tr th:each="cart, c:${carts}">
                             <th scope="row">[[${c.count}]]</th>
                             <td><img th:src="@{'/img/product_img/'+${cart.product.image}}" width="70px" height="70px"></td>
@@ -98,13 +98,12 @@
                         </tbody>
                     </table>
 
-                    <!-- Chứa các nút ở giữa -->
-                    <div class="button-container">
+
+                    <div class="button-container text-center">
                         <!-- Nút Mua thêm sản phẩm khác -->
-                        <a href="/products" class="btn btn-info">Mua thêm sản phẩm khác</a>
+                        <a href="/products" class="btn btn-info ">Mua thêm sản phẩm khác</a>
                         <!-- Nút Proceed Payment -->
                         <a href="/user/orders" class="btn btn-warning">Proceed Payment</a>
-
 
                     </div>
                 </th:block>
