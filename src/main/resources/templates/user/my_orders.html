@@ -52,13 +52,12 @@
 
             <!-- Cột đánh giá sản phẩm -->
             <td>
-              <th:block th:if="${o.status == 'order received'}">
-                <!-- Hiển thị nút đánh giá khi đơn hàng ở trạng thái "order received" -->
-                <a th:href="@{'/user/review-product?id=' + ${o.id}}"
-                   class="btn btn-sm btn-success">Review</a>
+              <th:block th:if="${o.status == 'Order Received'}">
+                <!-- Hiển thị nút đánh giá khi đơn hàng ở trạng thái "Order Received" -->
+                <a th:href="@{'/product/' + ${o.product.id}}" class="btn btn-sm btn-success">Review</a>
               </th:block>
-              <th:block th:unless="${o.status == 'order received'}">
-                <!-- Nếu không phải trạng thái "order received", không cho phép đánh giá -->
+              <th:block th:unless="${o.status == 'Order Received'}">
+                <!-- Nếu không phải trạng thái "Order Received", không cho phép đánh giá -->
                 <a href="#" class="btn btn-sm btn-secondary disabled">Review</a>
               </th:block>
             </td>
