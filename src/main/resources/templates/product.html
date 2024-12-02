@@ -20,15 +20,11 @@
                 </form>
             </div>
         </div>
-
     </div>
-
 
     <div class="container-fluid mt-1">
         <div class="row">
-
             <div class="col-md-2 p-0">
-
                 <div class="card shadow-sm p-0 mb-5 bg-body-tertiary rounded">
                     <div class="card-body">
                         <div class="list-group">
@@ -36,22 +32,25 @@
                             <a href="/products"
                                th:classappend="${paramValue==''} ? 'active':''"
                                class="list-group-item list-group-item-action"
-                               aria-current="true"> All </a> <a th:each="c:${categories}"
-                                                                th:href="@{'/products?category='+${c.name}}"
-                                                                th:classappend="${paramValue == c.name} ? 'active':''"
-                                                                class="list-group-item list-group-item-action">[[${c.name}]]</a>
+                               aria-current="true"> All </a>
+                            <a th:each="c:${categories}"
+                               th:href="@{'/products?category='+${c.name}}"
+                               th:classappend="${paramValue == c.name} ? 'active':''"
+                               class="list-group-item list-group-item-action">[[${c.name}]]</a>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-md-10">
                 <div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
                     <div class="card-body">
                         <p class="fs-3 text-center">Products</p>
                         <div class="row">
 
+                            <!-- Start th:block for checking if products exist -->
                             <th:block th:if="${productsSize >0}">
-                                <div class="col-md-3" th:each="p:${products}">
+                                <div class="col-md-3 mb-4" th:each="p:${products}">
                                     <div class="card">
                                         <div class="card-body ">
                                             <img alt="" th:src="@{'/img/product_img/'+${p.image}}"
@@ -72,14 +71,18 @@
                                     </div>
                                 </div>
                             </th:block>
-                            <th:block th:unless="${productsSize>0}">
-                                <p class="fs-4 text-center mt-4 text-danger">Product not
-                                    available</p>
-                            </th:block>
-                        </div>
+                            <!-- End th:block for checking if products exist -->
 
+                            <!-- Start th:block for when no products are available -->
+                            <th:block th:unless="${productsSize>0}">
+                                <p class="fs-4 text-center mt-4 text-danger">Product not available</p>
+                            </th:block>
+                            <!-- End th:block for when no products are available -->
+
+                        </div>
                     </div>
                 </div>
+
                 <!-- Start Pagination -->
                 <div class="row">
                     <div class="col-md-4">Total Products : [[${totalElements}]]</div>
@@ -95,9 +98,9 @@
                                     </a></li>
 
                                     <li th:each="i:${#numbers.sequence(1,totalPages)}"
-                                        class="page-item" th:classappend="${pageNo+1==i}?'active':''"
-                                        ]]><a class="page-link"
-                                              th:href="@{'/products?pageNo='+${i-1}}">[[${i}]]</a></li>
+                                        class="page-item" th:classappend="${pageNo+1==i}?'active':''">
+                                        <a class="page-link"
+                                           th:href="@{'/products?pageNo='+${i-1}}">[[${i}]]</a></li>
 
                                     <li class="page-item"
                                         th:classappend="${isLast} ? 'disabled':''"><a
@@ -107,9 +110,10 @@
                                     </a></li>
                                 </ul>
                             </nav>
+                        </th:block>
                     </div>
-                    </th:block>
                 </div>
+                <!-- End Pagination -->
 
             </div>
         </div>

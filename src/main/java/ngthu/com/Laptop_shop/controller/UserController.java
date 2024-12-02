@@ -2,10 +2,7 @@ package ngthu.com.Laptop_shop.controller;
 
 import jakarta.servlet.http.HttpSession;
 import ngthu.com.Laptop_shop.model.*;
-import ngthu.com.Laptop_shop.service.CartService;
-import ngthu.com.Laptop_shop.service.CategoryService;
-import ngthu.com.Laptop_shop.service.OrderService;
-import ngthu.com.Laptop_shop.service.UserService;
+import ngthu.com.Laptop_shop.service.*;
 import ngthu.com.Laptop_shop.util.CommonUtil;
 import ngthu.com.Laptop_shop.util.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -34,6 +34,10 @@ public class UserController {
     private CommonUtil commonUtil;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ReviewService reviewService;
+    @Autowired
+    private ProductService productService; //
 
     @GetMapping("/")
     public String home() {
@@ -211,4 +215,68 @@ public class UserController {
 
         return "redirect:/user/profile";
     }
+
+
+    @PostMapping("/submit-review")
+    public String submitReview(@RequestParam Integer productId,
+                               @RequestParam Double rating,
+                               @RequestParam String comment,
+                               Principal p,
+                               HttpSession session, Model m, RedirectAttributes redirectAttributes) {
+        // Lấy thông tin người dùng đã đăng nhập
+        String email = p.getName();
+        UserDtls user = userService.getUserByEmail(email);
+
+        // Kiểm tra xem người dùng có đơn hàng đã hoàn tất cho sản phẩm này không
+        List<ProductOrder> orders = orderService.getOrdersByUser(user.getId());
+        boolean hasPurchased = false;
+
+        for (ProductOrder order : orders) {
+            if (order.getProduct().getId().equals(productId) && order.getStatus().equals(OrderStatus.ORDER_RECEIVED.getName())) {
+                hasPurchased = true;
+                break;
+            }
+        }
+
+        // Nếu người dùng chưa mua sản phẩm, hiển thị thông báo lỗi và không cho phép đánh giá
+        if (!hasPurchased) {
+            session.setAttribute("errorMsg", "Bạn phải mua sản phẩm trước khi đánh giá.");
+            return "redirect:/product/" + productId;  // Quay lại trang sản phẩm
+        }
+
+        // Tạo và lưu đánh giá
+        Review review = new Review();
+        review.setUser(user);
+        review.setProduct(productService.getProductById(productId));
+        review.setRating(rating);
+        review.setComment(comment);
+        review.setReviewDate(new Date());
+
+        // Lưu đánh giá vào cơ sở dữ liệu
+        reviewService.saveReview(review);
+
+        // Hiển thị thông báo thành công
+        session.setAttribute("succMsg", "Bình luận của bạn đã được gửi thành công!");
+
+        // Lấy lại thông tin sản phẩm và danh sách đánh giá
+        Product product = productService.getProductById(productId);
+        List<Review> reviews = reviewService.getReviewsByProductId(productId);
+
+        // Đảm bảo rằng reviews không rỗng
+        if (reviews == null || reviews.isEmpty()) {
+            session.setAttribute("errorMsg", "Không có đánh giá cho sản phẩm này.");
+        }
+
+        // Thêm sản phẩm và danh sách đánh giá vào model
+        m.addAttribute("product", product);
+        m.addAttribute("reviews", reviews);
+
+        // Chuyển hướng lại trang sản phẩm và giữ lại thông tin
+        redirectAttributes.addFlashAttribute("product", product);
+        redirectAttributes.addFlashAttribute("reviews", reviews);
+
+        return "redirect:/product/" + productId;
+    }
+
+
 }

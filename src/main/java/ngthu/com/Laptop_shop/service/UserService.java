@@ -1,10 +1,12 @@
 package ngthu.com.Laptop_shop.service;
 
 import ngthu.com.Laptop_shop.model.UserDtls;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Service
 public interface UserService {
 
         public UserDtls saveUser(UserDtls user);

@@ -4,13 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>My Orders</title>
 </head>
 <body>
 <section>
-
   <div class="container mt-5 p-5">
-
     <div class="row">
       <th:block th:if="${session.succMsg}">
         <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
@@ -21,8 +19,9 @@
         <p class="text-danger fw-bold text-center">[[${session.errorMsg}]]</p>
         <th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
       </th:block>
+
       <p class="text-center fs-3">My Orders</p>
-      <div class="col-md-12 ">
+      <div class="col-md-12">
         <table class="table table-bordered">
           <thead>
           <tr>
@@ -32,6 +31,7 @@
             <th scope="col">Price</th>
             <th scope="col">Status</th>
             <th scope="col">Action</th>
+            <th scope="col">Review</th> <!-- Cột mới cho đánh giá -->
           </tr>
           </thead>
           <tbody>
@@ -39,37 +39,36 @@
             <th scope="row">[[${o.orderId}]]</th>
             <td>[[${o.orderDate}]]</td>
             <td>[[${o.product.title}]]</td>
-
-            <td>Quantity : [[${o.quantity}]] <br>Price :
-              [[${o.price}]] <br>Total Price :[[${o.quantity *
-              o.price}]]
+            <td>Quantity: [[${o.quantity}]] <br>Price: [[${o.price}]] <br>Total Price: [[${o.quantity * o.price}]]</td>
+            <td>[[${o.status}]]</td>
+            <td>
+              <th:block th:if="${o.status != 'Cancelled'}">
+                <a th:href="@{'/user/update-status?id=' + ${o.id} + '&st=6'}" class="btn btn-sm btn-danger">Cancel</a>
+              </th:block>
+              <th:block th:unless="${o.status != 'Cancelled'}">
+                <a href="#" class="btn btn-sm btn-danger disabled">Cancel</a>
+              </th:block>
             </td>
+
+            <!-- Cột đánh giá sản phẩm -->
             <td>
-              [[${o.status}]]</td>
-
-
-            <td>
-              <th:block th:if="${o.status!='Cancelled'}">
-                <a th:href="@{'/user/update-status?id='+${o.id}+'&st=6'}" class="btn btn-sm btn-danger">Cancel</a>
+              <th:block th:if="${o.status == 'order received'}">
+                <!-- Hiển thị nút đánh giá khi đơn hàng ở trạng thái "order received" -->
+                <a th:href="@{'/user/review-product?id=' + ${o.id}}"
+                   class="btn btn-sm btn-success">Review</a>
               </th:block>
-
-              <th:block th:unless="${o.status!='Cancelled'}">
-                <a href="#" class="btn btn-sm btn-danger disabled" >Cancel</a>
+              <th:block th:unless="${o.status == 'order received'}">
+                <!-- Nếu không phải trạng thái "order received", không cho phép đánh giá -->
+                <a href="#" class="btn btn-sm btn-secondary disabled">Review</a>
               </th:block>
-
-             </td>
+            </td>
 
           </tr>
-
           </tbody>
         </table>
-
       </div>
     </div>
-      </div>
-
-
-
+  </div>
 </section>
 </body>
 </html>
