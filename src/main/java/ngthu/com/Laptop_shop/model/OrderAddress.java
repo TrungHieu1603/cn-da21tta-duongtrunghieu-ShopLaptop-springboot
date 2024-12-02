@@ -14,9 +14,7 @@ public class OrderAddress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String firstName;
-
-    private String lastName;
+    private String fullName;
 
     private String email;
 
@@ -24,10 +22,5 @@ public class OrderAddress {
 
     private String address;
 
-    private String city;
-
-    private String state;
-
-    private String pincode;
 
 }

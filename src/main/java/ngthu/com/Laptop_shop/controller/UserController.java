@@ -106,6 +106,13 @@ public class UserController {
         List<Cart> carts = cartService.getCartsByUser(user.getId());
         m.addAttribute("carts", carts);
 
+        OrderRequest orderRequest = new OrderRequest();
+        orderRequest.setFullName(user.getName());  // Gán tên người dùng từ UserDtls
+        orderRequest.setEmail(user.getEmail());        // Gán email người dùng từ UserDtls
+        orderRequest.setMobileNo(user.getMobileNumber());  // Gán số điện thoại người dùng từ UserDtls
+        orderRequest.setAddress(user.getAddress());    // Gán địa chỉ người dùng từ UserDtls
+        m.addAttribute("orderRequest", orderRequest);
+
         // Kiểm tra giỏ hàng trống và hiển thị thông báo
         if (carts.isEmpty()) {
             session.setAttribute("errorMsg", "Bạn vẫn chưa chọn sản phẩm nào để mua.");
