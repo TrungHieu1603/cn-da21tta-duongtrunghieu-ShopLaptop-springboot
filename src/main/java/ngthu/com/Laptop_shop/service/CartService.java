@@ -14,4 +14,6 @@ public interface CartService {
 
     public void updateQuantity(String sy, Integer cid);
 
+    // Add this method to delete a product from the cart
+    public void removeCartItem(Integer cartItemId);
 }

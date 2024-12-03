@@ -4,39 +4,9 @@
 <meta charset="UTF-8">
 <title>Cart</title>
 <head>
-   <!-- <style>
-        /* Sử dụng Flexbox để căn giữa cả 2 nút */
-        .button-container {
-            display: flex;
-            justify-content: center; /* Căn giữa các nút */
-            gap: 20px; /* Khoảng cách giữa các nút */
-            margin-top: 20px; /* Khoảng cách phía trên giữa các nút */
-        }
+<style>
 
-        .button-container a {
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            color: white;
-            text-align: center;
-        }
-
-        .btn-warning {
-            background-color: #ffc107;
-        }
-
-        .btn-warning:hover {
-            background-color: #e0a800;
-        }
-
-        .btn-info {
-            background-color: #17a2b8;
-        }
-
-        .btn-info:hover {
-            background-color: #138496;
-        }
-    </style> -->
+</style>
 </head>
 <body>
 <section>
@@ -47,7 +17,7 @@
                 <p class="fs-4 text-center" style="margin: 0;">Cart Page</p>
                 <!-- Hiển thị thông báo nếu có thông điệp thành công -->
                 <th:block th:if="${session.succMsg}">
-                    <p class="text-success fw-bold">[[${session.succMsg}]]</p>
+                    <p class="text-success fw-bold text-center">[[${session.succMsg}]]</p>
                     <th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
                 </th:block>
 
@@ -69,6 +39,7 @@
                             <th scope="col">Price</th>
                             <th scope="col" class="text-center">Quantity</th>
                             <th scope="col">Total Price</th>
+                            <th scope="col">Remove</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -89,6 +60,11 @@
                                 </a>
                             </td>
                             <td>[[${cart.totalPrice}]]</td>
+                            <td>
+                                <a th:href="@{'/user/removeCartItem?cid=' + ${cart.id}}" style="color: red;">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="4"></td>

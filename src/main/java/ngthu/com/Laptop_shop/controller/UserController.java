@@ -37,12 +37,14 @@ public class UserController {
     @Autowired
     private ReviewService reviewService;
     @Autowired
-    private ProductService productService; //
+    private ProductService productService;
+
 
     @GetMapping("/")
     public String home() {
         return "user/home";
     }
+
 
     @ModelAttribute
     public void getUserDetails(Principal p, Model m) {
@@ -87,6 +89,14 @@ public class UserController {
         }
 
         return "/user/cart";
+    }
+    // Xử lý xóa sản phẩm khỏi giỏ hàng
+    @GetMapping("/removeCartItem")
+    public String removeCartItem(@RequestParam Integer cid, HttpSession session) {
+        cartService.removeCartItem(cid);  // Xóa sản phẩm khỏi giỏ hàng
+
+        session.setAttribute("succMsg", "Sản phẩm đã được xóa khỏi giỏ hàng.");
+        return "redirect:/user/cart";  // Quay lại trang giỏ hàng
     }
 
     @GetMapping("/cartQuantityUpdate")

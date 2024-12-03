@@ -98,5 +98,12 @@ public class CartServiceImpl implements CartService {
         }
 
     }
+    @Override
+    public void removeCartItem(Integer cartItemId) {
+        Cart cart = cartRepository.findById(cartItemId).orElse(null);
+        if (cart != null) {
+            cartRepository.delete(cart);  // Xóa sản phẩm khỏi giỏ hàng
+        }
+    }
 
 }
