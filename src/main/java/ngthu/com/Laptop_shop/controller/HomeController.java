@@ -6,12 +6,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import ngthu.com.Laptop_shop.model.Category;
 import ngthu.com.Laptop_shop.model.Product;
+import ngthu.com.Laptop_shop.model.Review;
 import ngthu.com.Laptop_shop.model.UserDtls;
 import ngthu.com.Laptop_shop.repository.ProductRepository;
-import ngthu.com.Laptop_shop.service.CartService;
-import ngthu.com.Laptop_shop.service.CategoryService;
-import ngthu.com.Laptop_shop.service.ProductService;
-import ngthu.com.Laptop_shop.service.UserService;
+import ngthu.com.Laptop_shop.service.*;
 import ngthu.com.Laptop_shop.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -55,6 +53,9 @@ public class HomeController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @ModelAttribute
     public void getUserDetails(Principal p, Model m) {
@@ -124,12 +125,19 @@ public class HomeController {
 
         return "product";
     }
-
     @GetMapping("/product/{id}")
     public String product(@PathVariable int id, Model m) {
+        // Lấy thông tin sản phẩm theo ID
         Product productById = productService.getProductById(id);
+
+        // Lấy danh sách bình luận cho sản phẩm này
+        List<Review> reviews = reviewService.getReviewsByProductId(id);
+
+        // Thêm sản phẩm và bình luận vào model
         m.addAttribute("product", productById);
-        return "view_product";
+        m.addAttribute("reviews", reviews);
+
+        return "view_product"; // Chuyển sang trang hiển thị sản phẩm
     }
 
     @PostMapping("/saveUser")
