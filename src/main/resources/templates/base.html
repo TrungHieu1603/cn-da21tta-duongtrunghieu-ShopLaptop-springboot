@@ -94,9 +94,8 @@
 
 
     .dropdown-menu{
-        background-color: #dc4e41;
-        color: white;
-        font-weight: bold;
+        background-color: #fff;
+        color: #000;
         padding: 8px 16px;
         border-radius: 5px;
         transition: color 0.3s ease, background-color 0.3s ease;
@@ -104,19 +103,15 @@
 
 
     .dropdown-menu .dropdown-item:hover {
-        color: #000 !important;
-        background-color: #E33539;
+        color: #ce1126 !important;
+        background-color: #FFF;
     }
 
 
     .nav-link.dropdown-toggle {
-        color: #FF6347;
+        color: #FFF;
     }
 
-
-    .nav-link.dropdown-toggle:hover {
-        color: #FF6347;
-    }
   </style>
 
 </head>
@@ -159,7 +154,7 @@
           <ul class="dropdown-menu">
             <li th:each="c:${categorys}">
               <a class="dropdown-item" th:href="@{'/products?category='+${c.name}}"
-                 style="background-color: #dc4e41; color: white; font-weight: bold; padding: 8px 16px; border-radius: 5px; transition: color 0.3s ease, background-color 0.3s ease;">
+                 style="background-color: #fff; color: #000; padding: 8px 16px; border-radius: 5px; transition: color 0.3s ease, background-color 0.3s ease;">
                 [[${c.name}]]
               </a>
             </li>
