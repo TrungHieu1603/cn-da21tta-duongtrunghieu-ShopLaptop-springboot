@@ -37,7 +37,19 @@
                                th:href="@{'/products?category='+${c.name}}"
                                th:classappend="${paramValue == c.name} ? 'active':''"
                                class="list-group-item list-group-item-action">[[${c.name}]]</a>
+                            <p class="fs-5 mt-4">Price Range</p>
+                            <!-- Price range filter -->
+                            <a th:href="@{'/products?category=' + ${paramValue} + '&priceRange=0-500'}"
+                               class="list-group-item list-group-item-action">Under 500</a>
+                            <a th:href="@{'/products?category=' + ${paramValue} + '&priceRange=1000000-5000000'}"
+                               class="list-group-item list-group-item-action">1M - 5M</a>
+                            <a th:href="@{'/products?category=' + ${paramValue} + '&priceRange=5000000-10000000'}"
+                               class="list-group-item list-group-item-action">5M - 10M</a>
+                            <a th:href="@{'/products?category=' + ${paramValue} + '&priceRange=10000000-'}"
+                               class="list-group-item list-group-item-action">Above 10M</a>
+
                         </div>
+
                     </div>
                 </div>
             </div>

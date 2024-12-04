@@ -94,28 +94,37 @@ public class HomeController {
     }
 
     @GetMapping("/products")
-    public String products(Model m, @RequestParam(value = "category", defaultValue = "") String category,
+    public String products(Model m,
+                           @RequestParam(value = "category", defaultValue = "") String category,
                            @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
                            @RequestParam(name = "pageSize", defaultValue = "9") Integer pageSize,
-                           @RequestParam(defaultValue = "") String ch) {
+                           @RequestParam(defaultValue = "") String ch,
+                           @RequestParam(defaultValue = "") String priceRange) {
 
         List<Category> categories = categoryService.getAllActiveCategory();
         m.addAttribute("paramValue", category);
         m.addAttribute("categories", categories);
 
-//		List<Product> products = productService.getAllActiveProducts(category);
-//		m.addAttribute("products", products);
         Page<Product> page = null;
-        if (StringUtils.isEmpty(ch)) {
-            page = productService.getAllActiveProductPagination(pageNo, pageSize, category);
+
+        if (StringUtils.isEmpty(priceRange)) {
+            // Nếu không có lựa chọn lọc giá, thực hiện tìm kiếm bình thường
+            if (StringUtils.isEmpty(ch)) {
+                page = productService.getAllActiveProductPagination(pageNo, pageSize, category);
+            } else {
+                page = productService.searchActiveProductPagination(pageNo, pageSize, category, ch);
+            }
         } else {
-            page = productService.searchActiveProductPagination(pageNo, pageSize, category, ch);
+            // Nếu có giá trị lọc theo giá
+            String[] priceRangeArray = priceRange.split("-");
+            Double minPrice = Double.parseDouble(priceRangeArray[0]);
+            Double maxPrice = priceRangeArray.length > 1 ? Double.parseDouble(priceRangeArray[1]) : Double.MAX_VALUE;
+            page = productService.filterProductsByPrice(minPrice, maxPrice, pageNo, pageSize);
         }
 
         List<Product> products = page.getContent();
         m.addAttribute("products", products);
         m.addAttribute("productsSize", products.size());
-
         m.addAttribute("pageNo", page.getNumber());
         m.addAttribute("pageSize", pageSize);
         m.addAttribute("totalElements", page.getTotalElements());
@@ -125,6 +134,7 @@ public class HomeController {
 
         return "product";
     }
+
     @GetMapping("/product/{id}")
     public String product(@PathVariable int id, Model m) {
         // Lấy thông tin sản phẩm theo ID
