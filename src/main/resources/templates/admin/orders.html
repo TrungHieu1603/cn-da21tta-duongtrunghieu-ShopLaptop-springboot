@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{base::Layout(~{::section})}">
 <head>
-  <meta charset="ISO-8859-1">
+  <meta charset="UTF-8">
   <title>Insert title here</title>
 </head>
 <body>
@@ -57,14 +57,11 @@
               <tr>
                 <th scope="row">[[${orderDtls.orderId}]]</th>
 
-                <td>Name : [[${orderDtls.orderAddress.firstName+'
-                  '+orderDtls.orderAddress.lastName}]]<br> Email :
+                <td>Name : [[${orderDtls.orderAddress.fullName}]]<br> Email :
                   [[${orderDtls.orderAddress.email}]] <br> Mobno:
                   [[${orderDtls.orderAddress.mobileNo}]] <br> Address :
-                  [[${orderDtls.orderAddress.address}]] <br> City :
-                  [[${orderDtls.orderAddress.city}]] <br> State :
-                  [[${orderDtls.orderAddress.state}]],
-                  [[${orderDtls.orderAddress.pincode}]]
+                  [[${orderDtls.orderAddress.address}]] <br>
+
 
 
 
@@ -117,13 +114,11 @@
             <tr th:each="o:${orders}">
               <th scope="row">[[${o.orderId}]]</th>
 
-              <td>Name : [[${o.orderAddress.firstName+'
-                '+o.orderAddress.lastName}]]<br> Email :
+              <td>Name : [[${o.orderAddress.fullName}]]<br> Email :
                 [[${o.orderAddress.email}]] <br> Mobno:
                 [[${o.orderAddress.mobileNo}]] <br> Address :
-                [[${o.orderAddress.address}]] <br> City :
-                [[${o.orderAddress.city}]] <br> State :
-                [[${o.orderAddress.state}]], [[${o.orderAddress.pincode}]]
+                [[${o.orderAddress.address}]] <br>
+
 
 
 

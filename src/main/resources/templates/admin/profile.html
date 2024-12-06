@@ -32,16 +32,16 @@
                     <table class="table table-borderless">
 
                         <tbody>
-                        <form action="/admin/update-profile" method="post"
+                        <form action="/user/update-profile" method="post"
                               enctype="multipart/form-data">
                             <tr>
-                                <th scope="row">Name</th>
+                                <th scope="row">Tên Tài Khoản</th>
                                 <td>:</td>
                                 <td><input type="text" name="name" class="form-control"
                                            th:value="${user.name}"></td>
                             </tr>
                             <tr>
-                                <th scope="row">Mobile Number</th>
+                                <th scope="row">Số Điện Thoại</th>
                                 <td>:</td>
                                 <td><input type="text" name="mobileNumber"
                                            class="form-control" th:value="${user.mobileNumber}"></td>
@@ -53,12 +53,12 @@
                                            readonly th:value="${user.email}"></td>
                             </tr>
                             <tr>
-                                <th scope="row">Address</th>
+                                <th scope="row">Địa Chỉ</th>
                                 <td>:</td>
                                 <td><input type="text" name="address" class="form-control"
                                            th:value="${user.address}"></td>
                             </tr>
-                            <tr>
+                           <!-- <tr>
                                 <th scope="row">City</th>
                                 <td>:</td>
                                 <td><input type="text" name="city" class="form-control"
@@ -75,21 +75,21 @@
                                 <td>:</td>
                                 <td><input type="text" name="pincode" class="form-control"
                                            th:value="${user.pincode}"></td>
-                            </tr>
+                            </tr>-->
                             <tr>
-                                <th scope="row">Image</th>
+                                <th scope="row">Hình ảnh</th>
                                 <td>:</td>
                                 <td><input type="file" name="img" class="form-control"
                                            value=""></td>
                             </tr>
                             <tr>
-                                <th scope="row">Role</th>
+                                <th scope="row">Vai Trò</th>
                                 <td>:</td>
                                 <td><input type="text" name="" class="form-control"
                                            readonly th:value="${user.role}"></td>
                             </tr>
                             <tr>
-                                <th scope="row">Account Status</th>
+                                <th scope="row">Trạng Thái</th>
                                 <td>:</td>
                                 <td><input type="text" name="" class="form-control"
                                            readonly th:value="${user.isEnable}"> <input
@@ -99,7 +99,7 @@
                             <tr>
                                 <td></td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm bg-primary text-light">Update</button>
+                                    <button class="btn btn-sm bg-primary text-light">Cập Nhật</button>
                                 </td>
                             </tr>
                         </form>
@@ -117,28 +117,28 @@
                         <table class="table table-borderless">
 
                             <tbody>
-                            <form action="/admin/change-password" method="post">
+                            <form action="/user/change-password" method="post">
                                 <tr>
-                                    <th scope="row">Current Password</th>
+                                    <th scope="row">Mật Khẩu Hiện Tại </th>
 
                                     <td><input type="password" name="currentPassword" class="form-control"></td>
                                 </tr>
 
                                 <tr>
-                                    <th scope="row">New Password</th>
+                                    <th scope="row">Mật Khẩu Mới</th>
 
                                     <td><input type="password" name="newPassword" class="form-control"></td>
                                 </tr>
 
                                 <tr>
-                                    <th scope="row">Confirm Password</th>
+                                    <th scope="row">Xác Nhận Mật Khẩu</th>
 
                                     <td><input type="password" name="confirmPassword" class="form-control"></td>
                                 </tr>
                                 <tr>
                                     <td></td>
                                     <td class="text-center">
-                                        <button class="btn btn-sm bg-primary text-light col-md-4">Update</button>
+                                        <button class="btn btn-sm bg-primary text-light col-md-4">Cập Nhật</button>
                                     </td>
 
                                 </tr>
