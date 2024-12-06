@@ -104,7 +104,15 @@
                 <!-- Nếu có đánh giá -->
                 <th:block th:if="${reviews != null && !reviews.isEmpty()}">
                     <li th:each="review : ${reviews}">
-                        <p><strong th:text="${review.user.name}">User Name</strong> - Rating: <span th:text="${review.rating}">Rating</span></p>
+                        <p><strong th:text="${review.user.name}">User Name</strong> - Rating:
+                        <div class="star-rating">
+                            <i class="fas fa-star" th:classappend="${review.rating >= 1 ? 'text-warning' : ''}"></i>
+                            <i class="fas fa-star" th:classappend="${review.rating >= 2 ? 'text-warning' : ''}"></i>
+                            <i class="fas fa-star" th:classappend="${review.rating >= 3 ? 'text-warning' : ''}"></i>
+                            <i class="fas fa-star" th:classappend="${review.rating >= 4 ? 'text-warning' : ''}"></i>
+                            <i class="fas fa-star" th:classappend="${review.rating >= 5 ? 'text-warning' : ''}"></i>
+                        </div>
+                        </p>
                         <p th:text="${review.comment}">Review Comment</p>
                         <p><em>Posted on: <span th:text="${#dates.format(review.reviewDate, 'dd-MM-yyyy')}">Review Date</span></em></p>
                     </li>
@@ -112,11 +120,17 @@
             </ul>
         </div>
 
-        <!-- Form để người dùng thêm đánh giá -->
-        <form th:action="@{/user/submit-review}" method="post">
+        <form th:action="@{/user/submit-review}" method="post" id="reviewForm">
             <input type="hidden" name="productId" th:value="${product.id}">
             <label for="rating">Rating:</label>
-            <input type="number" id="rating" name="rating" min="1" max="5" required>
+            <div class="star-rating" style="cursor: pointer;">
+                <i class="fas fa-star" data-value="1" style="font-size: 1.5rem; color: #ccc; transition: color 0.2s;"></i>
+                <i class="fas fa-star" data-value="2" style="font-size: 1.5rem; color: #ccc; transition: color 0.2s;"></i>
+                <i class="fas fa-star" data-value="3" style="font-size: 1.5rem; color: #ccc; transition: color 0.2s;"></i>
+                <i class="fas fa-star" data-value="4" style="font-size: 1.5rem; color: #ccc; transition: color 0.2s;"></i>
+                <i class="fas fa-star" data-value="5" style="font-size: 1.5rem; color: #ccc; transition: color 0.2s;"></i>
+            </div>
+            <input type="hidden" id="rating" name="rating" value="0">
 
             <label for="comment">Your Review:</label>
             <textarea id="comment" name="comment" required></textarea>
@@ -124,7 +138,10 @@
             <button type="submit">Submit Review</button>
         </form>
 
+
     </div>
 </section>
+
+
 </body>
 </html>

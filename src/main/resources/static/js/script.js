@@ -257,16 +257,7 @@ $resetPassword.validate({
 			}
 		}
 })
-
-
-
-
-
-
-
 })
-
-
 
 jQuery.validator.addMethod('lettersonly', function(value, element) {
 		return /^[^-\s][a-zA-Z_\s-]+$/.test(value);
@@ -284,3 +275,42 @@ jQuery.validator.addMethod('lettersonly', function(value, element) {
 	jQuery.validator.addMethod('numericOnly', function(value, element) {
 		return /^[0-9]+$/.test(value);
 	});
+
+$(document).ready(function () {
+    // Khi người dùng di chuột qua sao
+    $(".star-rating i").on("mouseover", function () {
+        const value = $(this).data("value"); // Lấy giá trị của sao
+        $(".star-rating i").each(function () {
+            if ($(this).data("value") <= value) {
+                $(this).css("color", "#ffc107"); // Áp dụng màu vàng khi hover
+            } else {
+                $(this).css("color", "#ccc"); // Màu xám khi không hover
+            }
+        });
+    });
+
+    // Khi người dùng click vào sao
+    $(".star-rating i").on("click", function () {
+        const value = $(this).data("value"); // Lấy giá trị của sao khi click
+        $("#rating").val(value); // Cập nhật giá trị vào input ẩn
+        $(".star-rating i").each(function () {
+            if ($(this).data("value") <= value) {
+                $(this).css("color", "#ffc107"); // Áp dụng màu vàng khi click
+            } else {
+                $(this).css("color", "#ccc"); // Màu xám khi không click
+            }
+        });
+    });
+
+    // Khi người dùng rời khỏi sao
+    $(".star-rating").on("mouseleave", function () {
+        const value = $("#rating").val(); // Lấy giá trị đã chọn từ input ẩn
+        $(".star-rating i").each(function () {
+            if ($(this).data("value") <= value) {
+                $(this).css("color", "#ffc107"); // Áp dụng màu vàng cho các sao đã chọn
+            } else {
+                $(this).css("color", "#ccc"); // Màu xám cho các sao không chọn
+            }
+        });
+    });
+});
