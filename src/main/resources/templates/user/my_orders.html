@@ -25,7 +25,7 @@
         <table class="table table-bordered">
           <thead>
           <tr>
-            <th scope="col">Order Id</th>
+            <th scope="col">STT</th>
             <th scope="col">Date</th>
             <th scope="col">Product Details</th>
             <th scope="col">Price</th>
@@ -35,8 +35,8 @@
           </tr>
           </thead>
           <tbody>
-          <tr th:each="o:${orders}">
-            <th scope="row">[[${o.orderId}]]</th>
+          <tr th:each="o, iterStat : ${orders}">
+            <th scope="row">[[${iterStat.count}]]</th>
             <td>[[${o.orderDate}]]</td>
             <td>[[${o.product.title}]]</td>
             <td>Quantity: [[${o.quantity}]] <br>Price: [[${o.price}]] <br>Total Price: [[${o.quantity * o.price}]]</td>

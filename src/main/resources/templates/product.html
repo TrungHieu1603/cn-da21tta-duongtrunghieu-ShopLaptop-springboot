@@ -2,18 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::Layout(~{::section})}">
 <head>
     <meta charset="UTF-8">
-    <title>Insert title here</title>
+    <title>Products</title>
 </head>
 <body>
 <section>
-    <div class="container-fluid p-5 mt-5" style="background-color: #FF4D4D; padding: 30px;">
+    <!-- Search Bar -->
+    <div class="container-fluid" style="background-color: #8EB486; padding: 30px;">
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <form action="/products" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control" name="ch" style="border-color: #FF4D4D;">
+                        <input type="text" class="form-control" name="ch" style="border-color: #8EB486;">
                         <button class="btn" style="background-color: #FFF; color: #000; border: none; padding: 10px 20px; margin-left: 10px;">
-                            <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
+                            <i class="fa-solid fa-magnifying-glass"></i> Search
                         </button>
                     </div>
                 </form>
@@ -21,131 +22,75 @@
         </div>
     </div>
 
-    <div class="container-fluid mt-1">
+    <!-- Category Filters -->
+    <div class="container">
         <div class="row">
-            <div class="col-md-2 p-0">
-                <div class="card shadow-sm p-0 mb-5 bg-body-tertiary rounded" style="background-color: #f8f9fa;">
-                    <div class="card-body">
-                        <div class="list-group">
-                            <p class="fs-5" style="color: #000;">Thể loại</p>
-                            <a href="/products" class="list-group-item list-group-item-action"
-                               style="color: #000; cursor: pointer; background-color: white;"
-                               onmouseover="this.style.backgroundColor='#FF4D4D'; this.style.color='white';"
-                               onmouseout="this.style.backgroundColor='white'; this.style.color='#000';"
-                               onclick="this.style.backgroundColor='#FF4D4D'; this.style.color='white';">
-                                Tất cả
-                            </a>
-                            <a th:each="c:${categories}"
-                               th:href="@{'/products?category='+${c.name}}"
-                               class="list-group-item list-group-item-action"
-                               style="color: #000; cursor: pointer; background-color: white;"
-                               onmouseover="this.style.backgroundColor='#FF4D4D'; this.style.color='white';"
-                               onmouseout="this.style.backgroundColor='white'; this.style.color='#000';"
-                               onclick="this.style.backgroundColor='#FF4D4D'; this.style.color='white';">
-                                [[${c.name}]]
-                            </a>
-                            <p class="fs-5 mt-4" style="color: #000;">Lọc theo giá</p>
-                            <a th:href="@{'/products?category=' + ${paramValue} + '&priceRange=0-500'}"
-                               class="list-group-item list-group-item-action"
-                               style="color: #000; cursor: pointer; background-color: white;"
-                               onmouseover="this.style.backgroundColor='#FF4D4D'; this.style.color='white';"
-                               onmouseout="this.style.backgroundColor='white'; this.style.color='#000';"
-                               onclick="this.style.backgroundColor='#FF4D4D'; this.style.color='white';">
-                                Dưới 500
-                            </a>
-                            <a th:href="@{'/products?category=' + ${paramValue} + '&priceRange=500-10000'}"
-                               class="list-group-item list-group-item-action"
-                               style="color: #000; cursor: pointer; background-color: white;"
-                               onmouseover="this.style.backgroundColor='#FF4D4D'; this.style.color='white';"
-                               onmouseout="this.style.backgroundColor='white'; this.style.color='#000';"
-                               onclick="this.style.backgroundColor='#FF4D4D'; this.style.color='white';">
-                                Trên 500
-                            </a>
-                        </div>
-
-                    </div>
+            <div class="col-12 text-center">
+                <p style="font-size: 24px; font-weight: bold; margin-bottom: 10px;">Our Products</p>
+                <p style="font-size: 16px; color: #666; margin-bottom: 20px;">"Powerful performance, sophisticated design - Laptop for all your needs!"</p>
+                <div style="display: flex; justify-content: center; gap: 10px;">
+                    <a href="/products" style="background-color: black; color: white; padding: 8px 16px; text-decoration: none; border-radius: 5px;">All</a>
+                    <a th:each="c:${categories}" th:href="@{'/products?category='+${c.name}}" style="background-color: #b4c424; color: black; padding: 8px 16px; text-decoration: none; border-radius: 5px;">[[${c.name}]]</a>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="col-md-10">
-                <div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded" style="background-color: #f8f9fa;">
-                    <div class="card-body">
-                        <p class="fs-3 text-center" style="color: #FF4D4D;">Sản Phẩm</p>
-                        <div class="row">
-
-                            <!-- Start th:block for checking if products exist -->
-                            <th:block th:if="${productsSize >0}">
-                                <div class="col-md-3 mb-4" th:each="p:${products}">
-                                    <div class="product-card card" style="position: relative; overflow: hidden;">
-                                        <div class="card-body">
-                                            <img alt="" th:src="@{'/img/product_img/'+${p.image}}"
-                                                 width="100%" height="100%" style="object-fit: cover;">
-
-
-                                            <a th:href="@{'/product/'+${p.id}}" style="position: absolute; top: 10px; right: 10px; font-size: 15px; color: #FF4D4D;
-                                            padding: 5px; border-radius: 50%; z-index: 10;background-color:#FFE1FF; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);">
-                                                <i class="fa fa-eye"></i> <!-- Icon con mắt -->
-                                            </a>
-
-                                            <p class="fs-5 text-center" style="color: #FF4D4D;">[[${p.title}]]</p>
-                                            <div class="row text-center">
-                                                <p class="fs-6 fw-bold">
-                                                    <span> [[${p.discountPrice}]]</span> <br> <span
-                                                        class="text-decoration-line-through text-secondary">
-															[[${p.price}]]</span> <span class="fs-6 text-success">[[${p.discount}]]%
-															off </span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </th:block>
-                            <!-- End th:block for checking if products exist -->
-
-                            <!-- Start th:block for when no products are available -->
-                            <th:block th:unless="${productsSize>0}">
-                                <p class="fs-4 text-center mt-4 text-danger">Sản Phẩm Không Có Sẵn</p>
-                            </th:block>
-                            <!-- End th:block for when no products are available -->
-
+    <!-- Product Gallery -->
+    <div class="container mt-4">
+        <div class="row">
+            <th:block th:if="${productsSize > 0}">
+                <div class="col-md-3 mb-4" th:each="p:${products}" style="padding: 10px;">
+                    <div style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden; position: relative; background-color: white;">
+                        <img th:src="@{'/img/product_img/'+${p.image}}" alt="Product Image" style="width: 100%; height: 200px; object-fit: cover;">
+                        <div style="padding: 10px;">
+                            <p style="font-size: 16px; font-weight: bold; margin: 10px 0; color: #333;" th:text="${p.title}"></p>
+                            <p style="font-size: 14px; color: #b22222; margin: 0; font-weight: bold;" th:text="${p.discountPrice}"></p>
+                            <p style="font-size: 12px; color: #888; text-decoration: line-through;" th:text="${p.price}"></p>
                         </div>
+
+                        <!-- Icon "View Product" -->
+                        <a th:href="@{'/product/'+${p.id}}" style="position: absolute; top: 10px; right: 10px; font-size: 15px; color: #FF4D4D; padding: 5px; border-radius: 50%; z-index: 10; background-color: #FFE1FF; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);">
+                            <i class="fa fa-eye"></i> <!-- Icon con mắt -->
+                        </a>
+
+                        <!-- SALE Label -->
+                        <div style="position: absolute; top: 10px; left: 10px; background-color: #FF4D4D; color: white; padding: 5px; border-radius: 5px; font-size: 12px; font-weight: bold;">SALE</div>
                     </div>
                 </div>
+            </th:block>
 
-                <!-- Start Pagination -->
-                <div class="row">
-                    <div class="col-md-4" style="color: #FF4D4D;">Tổng Sản Phẩm : [[${totalElements}]]</div>
-                    <div class="col-md-6">
-                        <th:block th:if="${productsSize>0}">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item" th:classappend="${isFirst} ? 'disabled':''">
-                                        <a class="page-link" th:href="@{'/products?pageNo='+${pageNo-1}}"
-                                           aria-label="Previous" style="background-color: #FF4D4D; color: white;">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
+            <th:block th:unless="${productsSize > 0}">
+                <p class="fs-4 text-center mt-4 text-danger">Product Not Available</p>
+            </th:block>
+        </div>
+    </div>
 
-                                    <li th:each="i:${#numbers.sequence(1,totalPages)}" class="page-item"
-                                        th:classappend="${pageNo+1==i}?'active':''">
-                                        <a class="page-link" th:href="@{'/products?pageNo='+${i-1}}"
-                                           style="background-color: #FF4D4D; color: white;">[[${i}]]</a>
-                                    </li>
 
-                                    <li class="page-item" th:classappend="${isLast} ? 'disabled':''">
-                                        <a class="page-link" th:href="@{'/products?pageNo='+${pageNo+1}}"
-                                           aria-label="Next" style="background-color: #FF4D4D; color: white;">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </th:block>
-                    </div>
-                </div>
-                <!-- End Pagination -->
+    <!-- Pagination -->
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <th:block th:if="${productsSize > 0}">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" th:classappend="${isFirst} ? 'disabled':''">
+                            <a class="page-link" th:href="@{'/products?pageNo='+${pageNo-1}}" aria-label="Previous" style="background-color: #8EB486; color: white;">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
 
-            </div>
+                        <li th:each="i:${#numbers.sequence(1,totalPages)}" class="page-item" th:classappend="${pageNo+1==i}?'active':''">
+                            <a class="page-link" th:href="@{'/products?pageNo='+${i-1}}" style="background-color: #8EB486; color: white;">[[${i}]]</a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${isLast} ? 'disabled':''">
+                            <a class="page-link" th:href="@{'/products?pageNo='+${pageNo+1}}" aria-label="Next" style="background-color: #8EB486; color: white;">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </th:block>
         </div>
     </div>
 </section>
